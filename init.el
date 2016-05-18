@@ -345,6 +345,18 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (setq socks-server '("Default server" "127.0.0.1" 1080 5))
   (setq evil-shift-round nil)
   (setq exec-path-from-shell-arguments '("-l"))
+  (setq configuration-layer--elpa-archives
+        '(
+          ;; ("popkit" . "elpa.popkit.org/packages/")
+          ;; ("melpa"   . "melpa.org")
+          ("melpa"   . "http://elpa.zilongshanren.com/melpa/")
+          ("org"   . "http://elpa.zilongshanren.com/org/")
+          ;; ("org"   . "orgmode.org/elpa/")
+          ("gnu"   . "http://elpa.zilongshanren.com/gnu/")
+          ;; ("gnu"   . "elpa.gnu.org/packages/")
+          ))
+  (setq tramp-ssh-controlmaster-options
+      "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
   )
 
 (defun dotspacemacs/user-config ()
@@ -488,3 +500,17 @@ layers configuration. You are free to put any user code."
 
 ;;(setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
 ;;(load custom-file 'no-error 'no-message)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-attach-directory "~/org-notes/data/")
+ '(org-download-method (quote attach)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
