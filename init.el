@@ -344,6 +344,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; ss proxy. But it will cause anacond-mode failed.
   (setq socks-server '("Default server" "127.0.0.1" 1080 5))
   (setq evil-shift-round nil)
+  (setq exec-path-from-shell-arguments '("-l"))
   )
 
 (defun dotspacemacs/user-config ()
@@ -357,6 +358,7 @@ layers configuration. You are free to put any user code."
   (when (configuration-layer/layer-usedp 'chinese)
     (when (and (spacemacs/system-is-mac) window-system)
       (spacemacs//set-monospaced-font "Source Code Pro" "Hiragino Sans GB" 14 16)))
+  (setq-default org-list-allow-alphabetical t)
 
   ;; (global-company-mode t)
   (setq-default powerline-default-separator 'arrow)
@@ -456,8 +458,8 @@ layers configuration. You are free to put any user code."
   (spacemacs/declare-prefix "ot" "Toggle")
 
   (spacemacs|define-transient-state gist-list-mode
-    :title "Gist-mode Transient State"
-    :doc "
+	:title "Gist-mode Transient State"
+	:doc "
 [_k_]  kill current gist
 [_e_]  edit gist title
 [_+_]  add a file to current gist
@@ -468,20 +470,20 @@ layers configuration. You are free to put any user code."
 [_\\^_]  unstar current gist
 [_f_]  fork current gist
 "
-    :bindings
-    ("k" gist-kill-current "delete current gist")
-    ("e" gist-edit-current-description "edit current gist title")
-    ("+" gist-add-buffer "add a file to current gist ")
-    ("-" gist-remove-file "add a file to current gist ")
-    ("y" gist-print-current-url "print current gist url")
-    ("b" gist-browse-current-url "browse current gist in browser")
-    ("*" gist-star "star current gist")
-    ("^" gist-unstar "unstar current gist")
-    ("f" gist-fork "fork current gist")
-    ("q" nil "quit" :exit t)
-    ("<escape>" nil nil :exit t))
+	:bindings
+	("k" gist-kill-current "delete current gist")
+	("e" gist-edit-current-description "edit current gist title")
+	("+" gist-add-buffer "add a file to current gist ")
+	("-" gist-remove-file "add a file to current gist ")
+	("y" gist-print-current-url "print current gist url")
+	("b" gist-browse-current-url "browse current gist in browser")
+	("*" gist-star "star current gist")
+	("^" gist-unstar "unstar current gist")
+	("f" gist-fork "fork current gist")
+	("q" nil "quit" :exit t)
+	("<escape>" nil nil :exit t))
   (spacemacs/set-leader-keys-for-major-mode 'gist-list-mode
-    "." 'spacemacs/gist-list-mode-transient-state/body)
+	"." 'spacemacs/gist-list-mode-transient-state/body)
   )
 
 ;;(setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))

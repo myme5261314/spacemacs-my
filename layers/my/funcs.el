@@ -406,14 +406,16 @@ With PREFIX, cd to project root."
 ;; http://blog.lojic.com/2009/08/06/send-growl-notifications-from-carbon-emacs-on-osx/
 (defun my/growl-notification (title message &optional sticky)
   "Send a Growl notification"
-  (do-applescript
-   (format "tell application \"GrowlHelperApp\" \n
-              notify with name \"Emacs Notification\" title \"%s\" description \"%s\" application name \"Emacs.app\" sticky \"%s\"
-              end tell
-              "
-           title
-           message
-           (if sticky "yes" "no"))))
+  ;; (do-applescript
+  ;;  (format "tell application \"GrowlHelperApp\" \n
+  ;;             notify with name \"Emacs Notification\" title \"%s\" description \"%s\" application name \"Emacs.app\" sticky \"%s\"
+  ;;             end tell
+  ;;             "
+  ;;          title
+  ;;          message
+  ;;          (if sticky "yes" "no")))
+  (shell-command-to-string (format "notify-send %s %s" title message))
+   )
 
 (defun my/growl-timer (minutes message)
   "Issue a Growl notification after specified minutes"
