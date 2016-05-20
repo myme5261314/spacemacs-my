@@ -114,6 +114,7 @@ values."
      markdown
      org
      dash
+     bibtex
      my)
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -371,6 +372,9 @@ layers configuration. You are free to put any user code."
     (when (and (spacemacs/system-is-mac) window-system)
       (spacemacs//set-monospaced-font "Source Code Pro" "Hiragino Sans GB" 14 16)))
   (setq-default org-list-allow-alphabetical t)
+  (setq org-ref-default-bibliography '("~/org-notes/bib/references.bib")
+        org-ref-pdf-directory "~/org-notes/bib/pdf/"
+        org-ref-bibliography-notes "~/org-notes/bib/notes.org")
 
   ;; (global-company-mode t)
   (setq-default powerline-default-separator 'arrow)
@@ -505,6 +509,7 @@ layers configuration. You are free to put any user code."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files (quote ("/home/deeplearn/org-notes/notes.org")))
  '(org-attach-directory "~/org-notes/data/")
  '(org-download-method (quote attach)))
 (custom-set-faces
