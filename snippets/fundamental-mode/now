@@ -1,0 +1,5 @@
+# name: (now)
+# key: now
+# type: command
+# --
+(insert (format-time-string "[%Y-%m-%d %u %H:%M]"))

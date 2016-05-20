@@ -1,0 +1,5 @@
+# name: (license)
+# key: license
+# type: command
+# --
+(insert "gplv3")

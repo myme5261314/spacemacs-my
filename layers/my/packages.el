@@ -445,7 +445,11 @@ open and unsaved."
           (setq yas-wrap-around-region t)))
       (yas-minor-mode 1))
     (spacemacs/add-to-hooks 'my/load-yasnippet
-                            '(prog-mode-hook markdown-mode-hook org-mode-hook))))
+                            '(prog-mode-hook markdown-mode-hook org-mode-hook))
+    ;; https://github.com/capitaomorte/yasnippet/issues/557
+    (add-hook 'yas-minor-mode-hook
+              (lambda ()
+                (yas-activate-extra-mode 'fundamental-mode)))))
 
 (defun my/post-init-json-mode ()
   (add-to-list 'auto-mode-alist

@@ -1,0 +1,5 @@
+# name: (today)
+# key: today
+# type: command
+# --
+(insert (format-time-string "[%B %e, %Y (%u)]" (current-time)))

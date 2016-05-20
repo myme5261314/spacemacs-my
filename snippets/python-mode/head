@@ -1,0 +1,15 @@
+# name: (head)
+# key: head
+# expand-env: ((yas-indent-line 'auto))
+# --
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+# vim:fenc=utf-8
+#
+# Copyright © `(yas-expand-snippet (yas-lookup-snippet "(year)"))`
+#
+# Distributed under terms of the ${1:`(yas-expand-snippet (yas-lookup-snippet "(license)"))`} license.
+
+"""
+$0
+"""
