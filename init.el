@@ -46,7 +46,8 @@ values."
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
-   '(html
+   '(
+     rubyhtml
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -115,6 +116,7 @@ values."
      org
      dash
      bibtex
+     django
      my)
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these

@@ -4,9 +4,8 @@
 # --
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-# vim:fenc=utf-8
 #
-# Copyright © `(yas-expand-snippet (yas-lookup-snippet "(year)"))`
+# Copyright © `(yas-expand-snippet (yas-lookup-snippet "(year)"))` `(yas-expand-snippet (yas-lookup-snippet "(author)"))` <`(yas-expand-snippet (yas-lookup-snippet "(email)"))`>
 #
 # Distributed under terms of the ${1:`(yas-expand-snippet (yas-lookup-snippet "(license)"))`} license.
 
