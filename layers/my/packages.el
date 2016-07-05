@@ -70,7 +70,7 @@
                           ;; evil-escape
                           (cc-mode :location built-in)
                           youdao-dictionary
-                          ;; multiple-cursors
+                          multiple-cursors
                           company-c-headers
                           ;; hydra
                           org-octopress
