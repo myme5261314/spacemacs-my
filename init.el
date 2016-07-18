@@ -106,7 +106,7 @@ values."
                       auto-completion-enable-snippets-in-popup t)
      (shell :variables
             shell-default-position 'full
-            shell-default-shell 'ansi-term
+            shell-default-shell 'multi-term
             shell-default-term-shell "/bin/zsh")
      (chinese :variables chinese-default-input-method 'pinyin
               chinese-enable-fcitx t
@@ -176,7 +176,7 @@ values."
    dotspacemacs-startup-lists '(recents projects bookmarks)
    ;; Number of recent files to show in the startup buffer. Ignored if
    ;; `dotspacemacs-startup-lists' doesn't include `recents'. (default 5)
-   dotspacemacs-startup-recent-list-size 10
+   dotspacemacs-startup-recent-list-size 5
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'emacs-lisp-mode
    ;; List of themes, the first of the list is loaded when spacemacs starts.
