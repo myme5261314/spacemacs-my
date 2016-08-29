@@ -839,7 +839,7 @@ be global."
       ;; (when (configuration-layer/package-usedp 'company)
       ;;   (spacemacs|add-company-hook org-mode))
       ;; System locale to use for formatting time values.
-      (setq system-time-locale "C")         ; Make sure that the weekdays in the
+      (setq system-time-locale "C") ; Make sure that the weekdays in the
                                         ; time stamps of your Org mode files and
                                         ; in the agenda appear in English.
       (spacemacs|disable-company org-mode)
@@ -1750,3 +1750,10 @@ be global."
   (use-package moz-controller
     :init (moz-controller-global-mode t):diminish
     moz-controller-mode))
+
+(defun my/post-init-persp-mode ()
+  (setq wg-morph-on nil)
+  (setq persp-autokill-buffer-on-remove 'kill-weak)
+  (add-hook 'after-init-hook
+            #'(lambda ()
+                (persp-mode 1))))
