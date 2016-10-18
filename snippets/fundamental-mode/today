@@ -1,5 +1,5 @@
 # name: (today)
 # key: today
-# type: command
+# expand-env: ((yas-indent-line 'auto))
 # --
-(insert (format-time-string "[%B %e, %Y (%u)]" (current-time)))
+`(format-time-string "[%Z %Y/%m/%e (%a)]" (current-time))`
