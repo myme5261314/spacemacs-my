@@ -503,16 +503,17 @@ open and unsaved."
 
 
 (defun my/post-init-company ()
+  (with-eval-after-load 'company
   (progn
     (setq company-minimum-prefix-length 1 company-idle-delay
           0.08)
-    (when (configuration-layer/package-usedp 'company)
-      (spacemacs|add-company-hook shell-script-mode)
-      (spacemacs|add-company-hook makefile-bsdmake-mode)
-      (spacemacs|add-company-hook sh-mode)
-      (spacemacs|add-company-hook lua-mode)
-      (spacemacs|add-company-hook nxml-mode)
-      (spacemacs|add-company-hook conf-unix-mode))))
+      (spacemacs|add-company-backends :modes shell-script-mode)
+      (spacemacs|add-company-backends :modes makefile-bsdmake-mode)
+      (spacemacs|add-company-backends :modes sh-mode)
+      (spacemacs|add-company-backends :modes lua-mode)
+      (spacemacs|add-company-backends :modes nxml-mode)
+      (spacemacs|add-company-backends :modes text-mode)
+      (spacemacs|add-company-backends :modes conf-unix-mode))))
 
 (defun my/init-cmake-font-lock ()
   (use-package cmake-font-lock :defer t))
@@ -555,8 +556,7 @@ open and unsaved."
                  '("\\.mdown\\'" . markdown-mode))
     (with-eval-after-load 'markdown-mode
       (progn
-        (when (configuration-layer/package-usedp 'company)
-          (spacemacs|add-company-hook markdown-mode))
+        (spacemacs|add-company-backends :modes markdown-mode)
         (defun my/markdown-to-html ()
           (interactive)
           (start-process "grip"

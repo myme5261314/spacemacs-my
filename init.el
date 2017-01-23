@@ -394,8 +394,9 @@ layers configuration. You are free to put any user code."
     "]s" (lambda (n) (interactive "p")
            (forward-char) (dotimes (c n nil) (insert " ")) (backward-char (1+ n))))
 
-  (bb/define-key company-active-map
-    (kbd "C-w") 'evil-delete-backward-word)
+  (with-eval-after-load 'helm
+    (bb/define-key company-active-map
+      (kbd "C-w") 'evil-delete-backward-word))
 
   (with-eval-after-load 'helm
     (define-key helm-map (kbd "C-w") 'evil-delete-backward-word))
@@ -452,7 +453,6 @@ layers configuration. You are free to put any user code."
   (add-hook 'js2-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
   (spacemacs/set-leader-keys "rh" 'helm-resume)
   (spacemacs/set-leader-keys "ri" 'ivy-resume)
-  (spacemacs|add-company-hook 'text-mode)
 
   (defadvice find-file (before make-directory-maybe (filename &optional wildcards) activate)
     "Create parent directory if not exists while visiting file."
