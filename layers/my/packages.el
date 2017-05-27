@@ -80,6 +80,9 @@
                           elfeed
                           lua-mode
                           ycmd
+                          (vue-mode :location (recipe
+                                               :fetcher github
+                                               :repo "codefalling/vue-mode"))
                           ;; mwe-log-commands
                           org-pomodoro
                           discover-my-major
@@ -504,9 +507,9 @@ open and unsaved."
 
 (defun my/post-init-company ()
   (with-eval-after-load 'company
-  (progn
-    (setq company-minimum-prefix-length 1 company-idle-delay
-          0.08)
+    (progn
+      (setq company-minimum-prefix-length 1 company-idle-delay
+            0.08)
       (spacemacs|add-company-backends :modes shell-script-mode)
       (spacemacs|add-company-backends :modes makefile-bsdmake-mode)
       (spacemacs|add-company-backends :modes sh-mode)
@@ -525,7 +528,7 @@ open and unsaved."
 (defun my/post-init-cmake-mode ()
   (progn
     (spacemacs/declare-prefix-for-mode 'cmake-mode
-                                       "mh" "docs")
+      "mh" "docs")
     (spacemacs/set-leader-keys-for-major-mode
       'cmake-mode "hd" 'cmake-help)
     (defun cmake-rename-buffer ()
@@ -651,7 +654,7 @@ open and unsaved."
         (setq magit-completing-read-function 'magit-builtin-completing-read)
         ;; http://emacs.stackexchange.com/questions/6021/change-a-branchs-upstream-with-magit/6023#6023
         (magit-define-popup-switch 'magit-push-popup
-                                   ?u "Set upstream" "--set-upstream")
+          ?u "Set upstream" "--set-upstream")
         ;; (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
         ;; (add-hook 'magit-section-set-visibility-hook '(lambda (section) (let ((section-type (magit-section-type section)))
         ;;                                                              (if (or (eq 'untracked section-type)
@@ -902,6 +905,27 @@ be global."
                                          ("b" "Blog" tags-todo "BLOG")
                                          ("p" . "项目安排")
                                          ("pw" tags-todo "PROJECT+WORK+CATEGORY=\"cocos2d-x\"")
+                                         ("Q" . "Custom queries") ;; gives label to "Q"
+                                         ("Qa" "Archive search"
+                                          ;; search
+                                          org-search-view
+                                          ""
+                                          ((org-agenda-files (file-expand-wildcards "~/org-notes/archive/*.org_archive"))))
+                                         ("Qw" "Website search"
+                                          search
+                                          ""
+                                          ((org-agenda-files (file-expand-wildcards "~/org-notes/website/*.org"))))
+                                         ("Qb" "Projects and Archive"
+                                          search
+                                          ""
+                                          ((org-agenda-text-search-extra-files (file-expand-wildcards "~/org-notes/archive/*.org_archive"))))
+                                         ;; searches both projects and archive directories
+                                         ("QA" "Archive tags search"
+                                          ;; org-tags-view
+                                          tags
+                                          ""
+                                          ((org-agenda-files (file-expand-wildcards "~/org-notes/archive/*.org_archive"))))
+                                         ;; ...other commands here
                                          ("pl" tags-todo "PROJECT+DREAM+CATEGORY=\"my\"")
                                          ("W" "Weekly Review"
                                           ((stuck "") ;; review stuck projects as designated by org-stuck-projects
@@ -1553,7 +1577,7 @@ be global."
 (defun my/post-init-nodejs-repl ()
   (progn
     (spacemacs/declare-prefix-for-mode 'js2-mode
-                                       "ms" "REPL")
+      "ms" "REPL")
     (spacemacs/set-leader-keys-for-major-mode
       'js2-mode "sb" 'nodejs-repl-eval-buffer "sf"
       'nodejs-repl-eval-function "sd" 'nodejs-repl-eval-dwim)))
@@ -1750,6 +1774,12 @@ be global."
   (use-package moz-controller
     :init (moz-controller-global-mode t):diminish
     moz-controller-mode))
+
+(defun my/init-vue-mode ()
+  (use-package vue-mode
+    :config
+    ;; 0, 1, or 2, representing (respectively) none, low, and high coloring
+    (setq mmm-submode-decoration-level 2)))
 
 (defun my/post-init-persp-mode ()
   (setq wg-morph-on nil)

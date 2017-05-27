@@ -88,6 +88,7 @@ values."
      ranger
      ;; racket
      gtags ;; need configuration
+     cscope
      (spacemacs-layouts :variables layouts-enable-autosave t
                         layouts-autosave-delay 300)
      ;; eyebrowse
@@ -103,7 +104,8 @@ values."
           magit-revision-show-gravatars nil)
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      (c-c++ :variables
-            c-c++-default-mode-for-headers 'c++-mode)
+            c-c++-default-mode-for-headers 'c++-mode
+            c-c++-enable-clang-support t)
      (auto-completion :variables auto-completion-enable-sort-by-usage t
                       auto-completion-enable-snippets-in-popup t)
      (shell :variables
@@ -176,7 +178,7 @@ values."
    ;; List of items to show in the startup buffer. If nil it is disabled.
    ;; Possible values are: `recents' `bookmarks' `projects' `agenda' `todos'.
    ;; (default '(recents projects))
-   dotspacemacs-startup-lists '((recents . 10) (projects . 7) (bookmarks . 5) (agenda . 5) (todos . 5))
+   dotspacemacs-startup-lists '((recents . 10) (projects . 10) (bookmarks . 5) (agenda . 5) (todos . 5))
    ;; Default major mode of the scratch buffer (default `text-mode')
    dotspacemacs-scratch-mode 'emacs-lisp-mode
    ;; List of themes, the first of the list is loaded when spacemacs starts.
@@ -199,7 +201,7 @@ values."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
+                               :size 15
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -403,6 +405,24 @@ layers configuration. You are free to put any user code."
 
   (with-eval-after-load 'helm-swoop
     (define-key helm-swoop-map (kbd "C-w") 'evil-delete-backward-word))
+  (with-eval-after-load 'org
+    (setq-default dotspacemacs-configuration-layers
+                  '((org :variables org-projectile-file "TODOs.org")))
+    (with-eval-after-load 'org-agenda
+      (require 'org-projectile)
+      ;;(push (org-projectile:todo-files) org-agenda-files))
+      (setq org-agenda-files (append org-agenda-files (org-projectile:todo-files)))
+      (add-to-list 'org-capture-templates
+                   (org-projectile:project-todo-entry "p" "* TODO %? %a" "Project Todo"))
+      )
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '(
+       (python . t)
+       (emacs-lisp . t)
+       (C . t)
+       (latex . t)))
+    )
 
   (add-hook 'text-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'auto-fill-mode)
@@ -511,8 +531,17 @@ layers configuration. You are free to put any user code."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files (quote ("/home/deeplearn/org-notes/notes.org")))
+ '(org-agenda-files (file-expand-wildcards "~/org-notes/*.org"))
  '(org-attach-directory "~/org-notes/data/")
+ '(org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t% s")
+                              (timeline . "  % s")
+                              (todo .
+                                    " %l %i %-12:c ")
+                                    ;; " %i %-12:c %(concat \"[ \"(org-format-outline-path (org-get-outline-path)) \" ]\") ")
+                              (tags .
+                                    " %l %i %-12:c ")
+                                    ;; " %i %-12:c %(concat \"[ \"(org-format-outline-path (org-get-outline-path)) \" ]\") ")
+                                    (search . " %l %i %-12:c")))
  '(org-download-method (quote attach)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
