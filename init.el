@@ -523,6 +523,7 @@ layers configuration. You are free to put any user code."
 	("<escape>" nil nil :exit t))
   (spacemacs/set-leader-keys-for-major-mode 'gist-list-mode
 	"." 'spacemacs/gist-list-mode-transient-state/body)
+  (turn-on-fci-mode)
   )
 
 ;;(setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
