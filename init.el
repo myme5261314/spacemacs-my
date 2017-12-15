@@ -433,8 +433,12 @@ layers configuration. You are free to put any user code."
       (setq org-download-method (quote attach))
       (require 'org-projectile)
       ;; (push (org-projectile-todo-files) org-agenda-files)
-      (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
-      (add-to-list 'org-capture-templates
+      ;; (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+      (mapcar '(lambda (file)
+                 (when (file-exists-p file)
+                   (push file org-agenda-files))
+              (org-projectile-todo-files)))
+    (add-to-list 'org-capture-templates
                    (org-projectile-project-todo-entry "p" "* TODO %? %a" "Project Todo"))
       )
     (org-babel-do-load-languages
