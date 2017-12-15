@@ -46,7 +46,8 @@ values."
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
-   '(
+   '(ruby
+     nginx
      csv
      javascript
      ;; rubyhtml
@@ -57,6 +58,7 @@ values."
      ;; ---------------------------------------------------------------- spacemacs-helm
      ;; spacemacs-helm
      ;; spacemacs-ivy
+     helm
      better-defaults
      github
      (version-control :variables version-control-diff-tool 'git-gutter+
@@ -65,11 +67,13 @@ values."
      semantic                           ; too slow
      markdown
      (vinegar :variables vinegar-reuse-dired-buffer t)
-     org
+     (org :variables org-projectile-file "TODOs.org")
      prodigy
      search-engine
-     (syntax-checking :variables syntax-checking-enable-by-default nil)
-     (spell-checking :variables spell-checking-enable-by-default nil)
+     ;; (syntax-checking :variables syntax-checking-enable-by-default nil)
+     ;; (spell-checking :variables spell-checking-enable-by-default nil)
+     (syntax-checking)
+     (spell-checking)
      yaml
      ;; (ruby :variables ruby-version-manager 'rvm)
      python
@@ -112,12 +116,11 @@ values."
             shell-default-position 'full
             shell-default-shell 'multi-term
             shell-default-term-shell "/bin/zsh")
-     (chinese :variables chinese-default-input-method 'pinyin
+     (chinese :variables
               chinese-enable-fcitx t
               chinese-enable-youdao-dict t)
      emacs-lisp
      markdown
-     org
      dash
      bibtex
      django
@@ -343,24 +346,24 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  ;; https://github.com/syl20bnr/spacemacs/issues/2705
-  ;; (setq tramp-mode nil)
-  (setq tramp-ssh-controlmaster-options "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
 
   ;; ss proxy. But it will cause anacond-mode failed.
   (setq socks-server '("Default server" "127.0.0.1" 1080 5))
   (setq evil-shift-round nil)
   (setq exec-path-from-shell-arguments '("-l"))
-  (setq configuration-layer--elpa-archives
+  (setq configuration-layer-elpa-archives
         '(
           ;; ("popkit" . "elpa.popkit.org/packages/")
           ;; ("melpa"   . "melpa.org")
-          ("melpa"   . "http://elpa.zilongshanren.com/melpa/")
-          ("org"   . "http://elpa.zilongshanren.com/org/")
-          ;; ("org"   . "orgmode.org/elpa/")
-          ("gnu"   . "http://elpa.zilongshanren.com/gnu/")
+          ;; ("melpa"   . "http://elpa.zilongshanren.com/melpa/")
+          ;; ("gnu"   . "http://elpa.zilongshanren.com/gnu/")
           ;; ("gnu"   . "elpa.gnu.org/packages/")
+          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+          ("org"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
+          ("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
           ))
+  ;; https://github.com/syl20bnr/spacemacs/issues/2705
+  ;; (setq tramp-mode nil)
   (setq tramp-ssh-controlmaster-options
       "-o ControlMaster=auto -o ControlPath='tramp.%%C' -o ControlPersist=no")
   )
@@ -373,13 +376,21 @@ layers configuration. You are free to put any user code."
   (modify-syntax-entry ?_ "w")
   (spacemacs/toggle-indent-guide-globally-on)
   ;;解决org表格里面中英文对齐的问题
-  (when (configuration-layer/layer-usedp 'chinese)
-    (when (and (spacemacs/system-is-mac) window-system)
-      (spacemacs//set-monospaced-font "Source Code Pro" "Hiragino Sans GB" 14 16)))
+  ;; (when (configuration-layer/layer-usedp 'chinese)
+  ;;   (when (and (spacemacs/system-is-mac) window-system)
+  ;;     (spacemacs//set-monospaced-font "Source Code Pro" "Hiragino Sans GB" 14 16)))
+  ;; (use-package chinese-fonts-setup)
   (setq-default org-list-allow-alphabetical t)
   (setq org-ref-default-bibliography '("~/org-notes/bib/references.bib")
         org-ref-pdf-directory "~/org-notes/bib/pdf/"
         org-ref-bibliography-notes "~/org-notes/bib/notes.org")
+  (setq ghub-username "myme5261314"
+        ghub-token "5cfc67514a7c20cafade3bf650588e651d5920ac"
+        magithub-api-timeout 5)
+  ;; Activate column indicator in prog-mode and text-mode, except for org-mode
+  (add-hook 'prog-mode-hook 'turn-on-fci-mode)
+  (add-hook 'text-mode-hook 'turn-on-fci-mode)
+  (add-hook 'org-mode-hook 'turn-off-fci-mode 'append)
 
   ;; (global-company-mode t)
   (setq-default powerline-default-separator 'arrow)
@@ -397,9 +408,9 @@ layers configuration. You are free to put any user code."
     "]s" (lambda (n) (interactive "p")
            (forward-char) (dotimes (c n nil) (insert " ")) (backward-char (1+ n))))
 
-  (with-eval-after-load 'helm
-    (bb/define-key company-active-map
-      (kbd "C-w") 'evil-delete-backward-word))
+  ; (with-eval-after-load 'helm
+    ; (bb/define-key company-active-map
+      ; (kbd "C-w") 'evil-delete-backward-word))
 
   (with-eval-after-load 'helm
     (define-key helm-map (kbd "C-w") 'evil-delete-backward-word))
@@ -407,14 +418,24 @@ layers configuration. You are free to put any user code."
   (with-eval-after-load 'helm-swoop
     (define-key helm-swoop-map (kbd "C-w") 'evil-delete-backward-word))
   (with-eval-after-load 'org
-    (setq-default dotspacemacs-configuration-layers
-                  '((org :variables org-projectile-file "TODOs.org")))
     (with-eval-after-load 'org-agenda
+      (setq org-agenda-files (file-expand-wildcards "~/org-notes/*.org"))
+      (setq org-attach-directory "~/org-notes/data/")
+      (setq org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t% s")
+                                     (timeline . "  % s")
+                                     (todo .
+                                     " %l %i %-12:c ")
+                                     ;; " %i %-12:c %(concat \"[ \"(org-format-outline-path (org-get-outline-path)) \" ]\") ")
+                                     (tags .
+                                     " %l %i %-12:c ")
+                                     ;; " %i %-12:c %(concat \"[ \"(org-format-outline-path (org-get-outline-path)) \" ]\") ")
+                                     (search . " %l %i %-12:c")))
+      (setq org-download-method (quote attach))
       (require 'org-projectile)
-      ;;(push (org-projectile:todo-files) org-agenda-files))
-      (setq org-agenda-files (append org-agenda-files (org-projectile:todo-files)))
+      ;; (push (org-projectile-todo-files) org-agenda-files)
+      (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
       (add-to-list 'org-capture-templates
-                   (org-projectile:project-todo-entry "p" "* TODO %? %a" "Project Todo"))
+                   (org-projectile-project-todo-entry "p" "* TODO %? %a" "Project Todo"))
       )
     (org-babel-do-load-languages
      'org-babel-load-languages
@@ -526,29 +547,12 @@ layers configuration. You are free to put any user code."
   (turn-on-fci-mode)
   )
 
-;;(setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
-;;(load custom-file 'no-error 'no-message)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files (file-expand-wildcards "~/org-notes/*.org"))
- '(org-attach-directory "~/org-notes/data/")
- '(org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t% s")
-                              (timeline . "  % s")
-                              (todo .
-                                    " %l %i %-12:c ")
-                                    ;; " %i %-12:c %(concat \"[ \"(org-format-outline-path (org-get-outline-path)) \" ]\") ")
-                              (tags .
-                                    " %l %i %-12:c ")
-                                    ;; " %i %-12:c %(concat \"[ \"(org-format-outline-path (org-get-outline-path)) \" ]\") ")
-                                    (search . " %l %i %-12:c")))
- '(org-download-method (quote attach)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+(setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
+(load custom-file 'no-error 'no-message)
+
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+)

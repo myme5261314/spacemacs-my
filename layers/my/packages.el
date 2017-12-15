@@ -73,7 +73,7 @@
                           multiple-cursors
                           company-c-headers
                           ;; hydra
-                          org-octopress
+                          ;; org-octopress
                           helm-github-stars
                           evil
                           deft
@@ -99,7 +99,8 @@
                           pangu-spacing
                           ;; ace-window
                           fill-column-indicator
-                          sr-speedbar))
+                          chinese-fonts-setup
+                          ))
 
 (defun my/init-peep-dired ()
   ;;preview files in dired
@@ -1486,28 +1487,28 @@ be global."
               (setq helm-github-stars-username "myme5261314")
               (setq helm-github-stars-cache-file "~/.emacs.d/.cache/hgs-cache"))))
 
-(defun my/init-org-octopress ()
-  (use-package org-octopress
-    :commands (org-octopress):init
-    :defer t
-    :config (progn
-              (evilified-state-evilify org-octopress-summary-mode
-                org-octopress-summary-mode-map)
-              (add-hook 'org-octopress-summary-mode-hook
-                        #'(lambda ()
-                            (local-set-key (kbd "q")
-                                           'bury-buffer)))
-              (setq org-blog-dir "~/4gamers.cn/")
-              (setq org-octopress-directory-top org-blog-dir)
-              (setq org-octopress-directory-posts (concat org-blog-dir "source/_posts"))
-              (setq org-octopress-directory-org-top org-blog-dir)
-              (setq org-octopress-directory-org-posts (concat org-blog-dir "blog"))
-              (setq org-octopress-setup-file (concat org-blog-dir "setupfile.org"))
-              (defun my/org-save-and-export ()
-                (interactive)
-                (org-octopress-setup-publish-project)
-                (org-publish-project "octopress" t))
-              (spacemacs/set-leader-keys "op" 'my/org-save-and-export))))
+;; (defun my/init-org-octopress ()
+;;   (use-package org-octopress
+;;     :commands (org-octopress):init
+;;     :defer t
+;;     :config (progn
+;;               (evilified-state-evilify org-octopress-summary-mode
+;;                 org-octopress-summary-mode-map)
+;;               (add-hook 'org-octopress-summary-mode-hook
+;;                         #'(lambda ()
+;;                             (local-set-key (kbd "q")
+;;                                            'bury-buffer)))
+;;               (setq org-blog-dir "~/4gamers.cn/")
+;;               (setq org-octopress-directory-top org-blog-dir)
+;;               (setq org-octopress-directory-posts (concat org-blog-dir "source/_posts"))
+;;               (setq org-octopress-directory-org-top org-blog-dir)
+;;               (setq org-octopress-directory-org-posts (concat org-blog-dir "blog"))
+;;               (setq org-octopress-setup-file (concat org-blog-dir "setupfile.org"))
+;;               (defun my/org-save-and-export ()
+;;                 (interactive)
+;;                 (org-octopress-setup-publish-project)
+;;                 (org-publish-project "octopress" t))
+;;               (spacemacs/set-leader-keys "op" 'my/org-save-and-export))))
 
 (defun my/post-init-lispy ()
   (with-eval-after-load 'lispy
