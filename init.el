@@ -47,6 +47,8 @@ values."
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(ruby
+     ruby-on-rails
+     docker
      nginx
      csv
      javascript
@@ -205,7 +207,7 @@ values."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 15
+                               :size 11
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -436,8 +438,8 @@ layers configuration. You are free to put any user code."
       ;; (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
       (mapcar '(lambda (file)
                  (when (file-exists-p file)
-                   (push file org-agenda-files))
-              (org-projectile-todo-files)))
+                   (push file org-agenda-files)))
+              (org-projectile-todo-files))
     (add-to-list 'org-capture-templates
                    (org-projectile-project-todo-entry "p" "* TODO %? %a" "Project Todo"))
       )

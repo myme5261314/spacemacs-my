@@ -16,7 +16,6 @@
                           cmake-mode
                           flycheck
                           markdown-mode
-                          impatient-mode
                           swiper
                           ;; counsel
                           magit
@@ -26,9 +25,8 @@
                           ;; helm-ls-git
                           keyfreq
                           ;; worf
-                          org-download
                           ;; flycheck-package
-                          (org :location built-in)
+                          ;; (org :location built-in)
                           ;; nodejs-repl
                           ;; js2-mode
                           ;; js2-refactor
@@ -38,7 +36,7 @@
                           persp-mode
                           json-mode
                           ;; racket-mode
-                          yasnippet
+                          ;; yasnippet
                           helm-ag
                           hungry-delete
                           ;; flyspell
@@ -52,11 +50,10 @@
                           ctags-update
                           evil-vimish-fold
                           beacon
-                          (occur-mode :location built-in)
                           (dired-mode :location built-in)
                           ;; js-doc
                           ;; post extension names go here
-                          (doxymacs :location local)
+                          ; (doxymacs :location local)
                           ;; nodejs-repl-eval don't support es6 and js2-mode also don't support it
                           ;; so I use js-comit instead.
                           ;; (nodejs-repl-eval :location local)
@@ -99,7 +96,7 @@
                           pangu-spacing
                           ;; ace-window
                           fill-column-indicator
-                          chinese-fonts-setup
+                          ;; chinese-fonts-setup
                           ))
 
 (defun my/init-peep-dired ()
@@ -580,20 +577,6 @@ open and unsaved."
           (kbd "TAB")
           'markdown-cycle)))))
 
-(defun my/init-impatient-mode ()
-  "Initialize impatient mode"
-  (use-package impatient-mode
-    :init (progn
-            (defun my-mode-hook ()
-              "my web mode hook for HTML REPL"
-              (interactive)
-              (impatient-mode)
-              (spacemacs|hide-lighter impatient-mode)
-              (httpd-start))
-            (add-hook 'web-mode-hook 'my-mode-hook)
-            (spacemacs/set-leader-keys-for-major-mode
-              'web-mode "p" 'imp-visit-buffer))))
-
 
 (defun my/init-keyfreq ()
   (use-package keyfreq
@@ -826,11 +809,6 @@ be global."
   (use-package worf
     :defer t
     :init (add-hook 'org-mode-hook 'worf-mode)))
-
-(defun my/init-org-download ()
-  (use-package org-download
-    :defer t
-    :init (org-download-enable)))
 
 
 ;;In order to export pdf to support Chinese, I should install Latex at here: https://www.tug.org/mactex/
@@ -1230,17 +1208,17 @@ be global."
 
 ;; For each extension, define a function my/init-<extension-name>
 ;;
-(defun my/init-doxymacs ()
-  "Initialize doxymacs"
-  (use-package doxymacs
-    :init (add-hook 'c-mode-common-hook 'doxymacs-mode):config
-    (progn
-      (defun my-doxymacs-font-lock-hook ()
-        (if (or (eq major-mode 'c-mode)
-                (eq major-mode 'c++-mode))
-            (doxymacs-font-lock)))
-      (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
-      (spacemacs|hide-lighter doxymacs-mode))))
+; (defun my/init-doxymacs ()
+  ; "Initialize doxymacs"
+  ; (use-package doxymacs
+    ; :init (add-hook 'c-mode-common-hook 'doxymacs-mode):config
+    ; (progn
+      ; (defun my-doxymacs-font-lock-hook ()
+        ; (if (or (eq major-mode 'c-mode)
+                ; (eq major-mode 'c++-mode))
+            ; (doxymacs-font-lock)))
+      ; (add-hook 'font-lock-mode-hook 'my-doxymacs-font-lock-hook)
+      ; (spacemacs|hide-lighter doxymacs-mode))))
 
 (defun my/init-plain-org-wiki ()
   (use-package plain-org-wiki
@@ -1286,10 +1264,10 @@ be global."
             (global-set-key (kbd "C-c d")
                             'osx-dictionary-search-pointer))))
 
-(defun my/post-init-popwin ()
-  (progn
-    (push "*my/run-current-file output*" popwin:special-display-config)
-    (delete "*Async Shell Command*" 'popwin:special-display-config)))
+; (defun my/post-init-popwin ()
+  ; (progn
+    ; (push "*my/run-current-file output*" popwin:special-display-config)
+    ; (delete "*Async Shell Command*" 'popwin:special-display-config)))
 
 (defun my/post-init-avy ()
   (progn
@@ -1783,6 +1761,28 @@ be global."
     (setq mmm-submode-decoration-level 2)))
 (defun my/post-init-fill-column-indicator ()
   )
+
+
+(defun org/post-init-org-brain ()
+  (use-package org-brain
+    :ensure t
+    :init
+    (setq org-brain-path "~/org-notes/brain")
+    (with-eval-after-load 'evil
+      (evil-set-initial-state 'org-brain-visualize-mode 'emacs))
+    :config
+    (setq org-id-track-globally t)
+    (setq org-id-locations-file "~/org-notes/.brain-org-id-locations")
+    (with-eval-after-load 'org-capture-templates
+      (push '("b" "Brain" plain (function org-brain-goto-end)
+              "* %i%?" :empty-lines 1)
+            org-capture-templates)
+      )
+    (setq org-brain-visualize-default-choices 'all)
+    (setq org-brain-title-max-length 24)
+    )
+)
+
 
 (defun my/post-init-persp-mode ()
   (setq wg-morph-on nil)
